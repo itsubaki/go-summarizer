@@ -10,27 +10,23 @@ import (
 )
 
 func main() {
+    url := flag.String("url", "", "URL to summarize")
+    lang := flag.String("lang", "English", "Language for summarization")
     flag.Parse()
 
-    args := flag.Args()
-    if len(args) == 0 {
+    if url == nil || *url == "" {
         fmt.Println("Error: URL is required")
         return
     }
-    if len(args) > 1 {
-        fmt.Println("Error: Too many arguments")
-        return
-    }
 
-    url := args[0]
-    doc, err := request.FetchHtml(url)
+    doc, err := request.FetchHtml(*url)
     if err != nil {
         fmt.Println("Error parsing HTML:", err)
         return
     }
 
     text := parser.ExtractText(doc)
-    response, err := openai.CallOpenAI(text)
+    response, err := openai.CallOpenAI(text, *lang)
     if err != nil {
         fmt.Println("Error calling OpenAI:", err)
         return

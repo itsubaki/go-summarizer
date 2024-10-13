@@ -4,7 +4,7 @@ setup:
 	go mod tidy
 
 run: setup
-	go run . $(URL)
+	go run . --url $(URL)
 
 build:
 	go build .

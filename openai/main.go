@@ -18,13 +18,13 @@ func getModel() string {
     return model
 }
 
-func CallOpenAI(text string) (string, error) {
+func CallOpenAI(text string, lang string) (string, error) {
     // defaults to os.LookupEnv("OPENAI_API_KEY")
     client := openai.NewClient()
     model := getModel()
     chatCompletion, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
         Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-            openai.UserMessage(fmt.Sprintf("I need a summary of this text in Japanese:\n%s", text)),
+            openai.UserMessage(fmt.Sprintf("I need a summary of this text in %s:\n%s", lang, text)),
         }),
         Model: openai.F(model),
     })

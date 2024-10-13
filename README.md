@@ -8,11 +8,16 @@ Summarize web page by ChatGPT
 make run URL="http://example.com"
 ```
 
+## Usage
+
+```shell
+go run . --url "http://example.com" --lang "English"
+```
+
 ## Install
 
 ```shell
 # Install as `go-summarizer`
 make install
-
-go-summarizer "http://example.com"
+go-summarizer --url "http://example.com" --lang "English"
 ```
