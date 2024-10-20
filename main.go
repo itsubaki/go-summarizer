@@ -5,9 +5,9 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/blue0513/go-summarizer/httpclient"
 	"github.com/blue0513/go-summarizer/openai"
 	"github.com/blue0513/go-summarizer/parser"
-	"github.com/blue0513/go-summarizer/request"
 )
 
 func main() {
@@ -21,14 +21,15 @@ func main() {
 		return
 	}
 
-	html, err := request.Fetch(url)
+	ctx := context.Background()
+	html, err := httpclient.Fetch(ctx, url)
 	if err != nil {
 		fmt.Println("Error: parsing HTML:", err)
 		return
 	}
 
 	text := parser.Extract(html)
-	res, err := openai.Summarize(context.Background(), text, lang)
+	res, err := openai.Summarize(ctx, text, lang)
 	if err != nil {
 		fmt.Println("Error: summarize text", err)
 		return

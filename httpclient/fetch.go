@@ -1,17 +1,19 @@
-package request
+package httpclient
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
 	"golang.org/x/net/html"
 )
 
-var ErrURLRequired = fmt.Errorf("URL is required")
+var ErrURLIsEmpty = errors.New("url is empty")
 
-func Fetch(url string) (*html.Node, error) {
+func Fetch(ctx context.Context, url string) (*html.Node, error) {
 	if url == "" {
-		return nil, ErrURLRequired
+		return nil, ErrURLIsEmpty
 	}
 
 	resp, err := http.Get(url)
@@ -26,7 +28,7 @@ func Fetch(url string) (*html.Node, error) {
 
 	node, err := html.Parse(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("html parse: %w", err)
+		return nil, fmt.Errorf("parse html: %w", err)
 	}
 
 	return node, nil
